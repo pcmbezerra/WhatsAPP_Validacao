@@ -10,8 +10,8 @@ options.add_argument('start-maximized')
 options.add_experimental_option('excludeSwitches', ['enable-automation'])
 options.add_experimental_option('useAutomationExtension', False)
 browser = Chrome(executable_path='C:\DRIVERS\chromedriver.exe',options=options)
-browser.implicitly_wait(2)
-telefones = pd.read_csv('TESTE_WHATSAPP.csv')
+#browser.implicitly_wait(2)
+telefones = pd.read_csv('TESTE_WHATSAPP_100.csv')
 urlprincipal = 'https://web.whatsapp.com/'
 browser.get(urlprincipal)
 resposta = input('Você já escaneou o QRCODE?')
@@ -20,24 +20,27 @@ wppOff = []
 ddi= 55
 cont = 0
 try:
-    if resposta == 'SIM':
-        for x in telefones['DDD']:
-            for y in telefones['TELEFONE']:
-                fone = f'{ddi}{x}{y}'
+    while resposta == 'SIM':
+        for i in telefones.index:
+                fone = f'{ddi}{telefones["DDD"][i]}{telefones["TELEFONE"][i]}'
                 mensagem = urllib.parse.quote('hello world')
                 url = f'https://web.whatsapp.com/send?phone={fone}&text={mensagem}'
                 browser.get(url)
                 cont += 1
-                print(cont)
-                sleep(3.8)
+                sleep(4)
                 if len(browser.find_elements(By.CSS_SELECTOR, 'div[data-animate-modal-popup="true"]')) > 0:
                     wppOff.append(fone)
+                    print(f'Total de {len(wppOff)} invalidos.')
                 else:
                     wppOn.append(fone)
-                    if cont > len(telefones['TELEFONE']):
-                        resposta = 'NAO'
-    elif resposta == 'NAO':
-        print('Processo Finalizado!')
+                    print(f'Total de {len(wppOn)} Validos.')
+        if cont >= len(telefones['TELEFONE']):
+            print(f'''
+            Validação Finalizada:
+            Numeros que contém WhatsAPP: {len(wppOn)}
+            Numeros que não contém WhatsAPP: {len(wppOff)}
+            Total de numeros analisados: {cont}''')
+            break
 except Exception as erro:
     print(erro)
 finally:
