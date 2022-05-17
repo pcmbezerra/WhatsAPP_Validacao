@@ -10,7 +10,7 @@ options.add_argument('start-maximized')
 options.add_experimental_option('excludeSwitches', ['enable-automation'])
 options.add_experimental_option('useAutomationExtension', False)
 browser = Chrome(executable_path='C:\DRIVERS\chromedriver.exe',options=options)
-browser.implicitly_wait(2)
+browser.implicitly_wait(1)
 telefones = pd.read_csv('TESTE_WHATSAPP.csv')
 urlprincipal = 'https://web.whatsapp.com/'
 browser.get(urlprincipal)
@@ -27,7 +27,7 @@ try:
                 url = f'https://web.whatsapp.com/send?phone={fone}&text='
                 browser.get(url)
                 cont += 1
-                sleep(4)
+                sleep(3)
                 if len(browser.find_elements(By.CSS_SELECTOR,'div[title="Mensagem"]')) > 0:
                     wppOn.append(fone)
                     #browser.find_element(By.CSS_SELECTOR, 'div[role="gridcell"]').click()
