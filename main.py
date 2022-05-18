@@ -22,12 +22,12 @@ cont = 0
 try:
     while resposta == 'SIM':
         for i in telefones.index:
-                fone = f'{ddi}{telefones["DDD"][i]}{telefones["TELEFONE"][i]}'
+                fone = f'{telefones["DDD"][i]}{telefones["TELEFONE"][i]}'
                 #mensagem = urllib.parse.quote('hello world')
-                url = f'https://web.whatsapp.com/send?phone={fone}&text='
+                url = f'https://web.whatsapp.com/send?phone={ddi}{fone}&text='
                 browser.get(url)
                 cont += 1
-                sleep(3)
+                sleep(2)
                 if len(browser.find_elements(By.CSS_SELECTOR,'div[title="Mensagem"]')) > 0:
                     wppOn.append(fone)
                     #browser.find_element(By.CSS_SELECTOR, 'div[role="gridcell"]').click()
